@@ -31,6 +31,13 @@ func main() {
     cmd := &cli.Command{
 		Commands: []*cli.Command{
 			{
+				Name: "seed",
+				Usage: "Seed the database with default sites",
+				Action: func(ctx context.Context, _ *cli.Command) error {
+					return seedHandler(ctx,&cfgState)
+				},
+			},
+			{
 				Name: "list",
 				Usage: "List all sites",
 				Action: func(ctx context.Context, c *cli.Command) error {
@@ -39,7 +46,7 @@ func main() {
 			},
 			{
 				Name: "add",
-				Usage: "add a site to the list, 1st arg for the name and 2nd for the url",
+				Usage: "add a site to the list, 1st arg for the name and 2nd for the url, flag d for description",
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name: "description",
@@ -49,6 +56,13 @@ func main() {
 				},
 				Action: func(ctx context.Context, c *cli.Command) error {
 					return addHandler(ctx,c,&cfgState)
+				},
+			},
+			{
+				Name: "ping",
+				Usage: "Ping all sites and list the responses",
+				Action: func(ctx context.Context, c *cli.Command) error {
+					return pingHandler(ctx,c,&cfgState)
 				},
 			},
 		},
